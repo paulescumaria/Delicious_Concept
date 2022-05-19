@@ -1,4 +1,4 @@
-const {createRecipeServices} = require('../Services/recipeService')
+const {createRecipeServices} = require('../Services/recipeService.js')
 
 const createRecipeController = async (req,res) => {
     res.setHeader('Content-Type', 'application/json')
