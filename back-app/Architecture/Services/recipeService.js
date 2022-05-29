@@ -1,5 +1,6 @@
 const Recipe = require('../Model/recipeData')
 const { findById } = require('../Model/recipeData')
+const { ObjectId } = require('mongodb')
 
 const createRecipeServices = async (req, res) => {
     const recipe = new Recipe({
@@ -73,10 +74,16 @@ const updateRecipeServices = async (req,res) => {
 const removeRecipeServices = async (req,res) => {
 
     try {
-        await Recipe.findOneAndDelete(req.body)
-        res.status(201).json({message: "The recipe has been deleted"})
+        await Recipe.findByIdAndDelete({_id: ObjectId(req.body.id)}, (err, result) => {
+            if (err === null) {
+                res.status(201).json({message: "The recipe has been deleted"})
+            } else {
+                res.status(400).json({ message: err.message })
+            }
+        })
+
     } catch(err) {
-        res.status(400).json({ message: err.message })
+        res.status(404).json({ message: err.message })
     }
 
 } 
